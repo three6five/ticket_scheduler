@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.7-slim
 
 # used https://www.caktusgroup.com/blog/2017/03/14/production-ready-dockerfile-your-python-django-app/ for inspiration
 
