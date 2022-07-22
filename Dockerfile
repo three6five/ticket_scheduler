@@ -25,7 +25,7 @@ RUN set -ex \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy in your requirements file
-ADD ticket_scheduler_app/requirements.txt.dev /requirements.txt.dev
+ADD ticket_scheduler_app/requirements.txt /requirements.txt
 
 # OR, if you're using a directory for your requirements, copy everything (comment out the above and uncomment this if so):
 # ADD requirements /requirements
