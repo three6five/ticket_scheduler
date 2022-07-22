@@ -42,7 +42,7 @@ RUN set -ex \
     python3-dev \
     " \
     && apt-get update && apt-get install -y --no-install-recommends $BUILD_DEPS \
-    && pip install --no-cache-dir -r /requirements.txt.dev \
+    && pip install --no-cache-dir -r /requirements.txt \
     \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
