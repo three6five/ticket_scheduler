@@ -99,7 +99,10 @@ class Job(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         from scheduler.lib.run_jobs import get_next_run_period
         base_date = self.start_date if self.last_run_time is None else self.last_run_time
-        self.next_run_time = get_next_run_period(base_date, self.recur_period)
+        if self.id is None:  # Then its a new instance...
+            self.next_run_time = base_date
+        else:
+            self.next_run_time = get_next_run_period(base_date, self.recur_period)
 
         self.fd_company_id = Company.objects.get(name=self.company).freshdesk_id
         self.fd_group_id = Group.objects.get(name=self.group).freshdesk_id
