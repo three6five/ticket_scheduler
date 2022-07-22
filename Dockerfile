@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.10-slim
 
 # used https://www.caktusgroup.com/blog/2017/03/14/production-ready-dockerfile-your-python-django-app/ for inspiration
 
@@ -58,14 +58,6 @@ EXPOSE 8045
 
 # Add any static environment variables needed by Django or your settings file here:
 ENV DJANGO_SETTINGS_MODULE=ticket_scheduler.settings
-
-# Call collectstatic (customize the following line with the minimal environment variables needed for manage.py to run):
-#RUN DATABASE_URL='' python manage.py collectstatic --noinput
-
-# Run any new migrations
-# Todo: This doesnt seem like a good idea
-#RUN DATABASE_URL='' python manage.py makemigrations --noinput
-#RUN DATABASE_URL='' python manage.py migrate --noinput
 
 
 # Tell uWSGI where to find your wsgi file (change this):
