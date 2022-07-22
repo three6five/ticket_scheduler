@@ -2,6 +2,7 @@ import json
 import requests
 from env import fd_api_key
 from scheduler.lib.config_manager import get_config_value
+from scheduler.lib.logger import log_msg
 
 
 def create_fd_ticket(subject, company_id, group_id, task_body, task_type_name, agent_id=None):
@@ -21,7 +22,7 @@ def create_fd_ticket(subject, company_id, group_id, task_body, task_type_name, a
     }
 
     if agent_id:
-        params[agent_id] = agent_id
+        params['responder_id'] = agent_id
 
     headers = {
         'Content-Type': 'application/json'
@@ -32,5 +33,5 @@ def create_fd_ticket(subject, company_id, group_id, task_body, task_type_name, a
     if result.status_code == 201:
         return True
 
-    print(result.text)
+    log_msg(f'ticket creation failed: {result.text}')
     return False

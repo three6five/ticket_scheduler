@@ -3,20 +3,19 @@ from dateutil import relativedelta
 import pytz
 from scheduler.lib.async_scheduler import Scheduler
 from scheduler.lib.freshdesk.create_ticket import create_fd_ticket
+from scheduler.lib.logger import log_msg
 from scheduler.models import Job
 
 sleep_time = 1800
 
 
-def get_next_run_period(base_time, recur_period):
+def get_next_run_period(start_time, run_count, recur_period):
     if recur_period.name == 'Monthly':
-        next_run_time = base_time + relativedelta.relativedelta(months=1)
+        next_run_time = start_time + relativedelta.relativedelta(months=run_count)
     elif recur_period.name == 'Weekly':
-        next_run_time = base_time + relativedelta.relativedelta(weeks=1)
-    elif recur_period.name == 'Bi-Weekly':
-        next_run_time = base_time + relativedelta.relativedelta(weeks=2)
+        next_run_time = start_time + relativedelta.relativedelta(weeks=run_count)
     elif recur_period.name == 'Daily':
-        next_run_time = base_time + relativedelta.relativedelta(days=1)
+        next_run_time = start_time + relativedelta.relativedelta(days=run_count)
     else:
         raise ValueError(f'Unknown recur period: {recur_period}')
 
@@ -51,17 +50,19 @@ def run_job_tasks():
             for task in job.task_group.tasks.all():
                 full_subject = f'[{job.company}]: {task.subject}'
                 print(f'Creating ticket: {full_subject}')
-                if result := create_fd_ticket(subject=full_subject,
-                                              company_id=job.fd_company_id,
-                                              group_id=job.fd_group_id,
-                                              task_body=task.body,
-                                              task_type_name=task.task_type.name,
-                                              agent_id=job.engineer_id):
+                result = create_fd_ticket(subject=full_subject,
+                                          company_id=job.fd_company_id,
+                                          group_id=job.fd_group_id,
+                                          task_body=task.body,
+                                          task_type_name=task.task_type.name,
+                                          agent_id=int(job.engineer.freshdesk_id))
+                if not result:
+                    log_msg(f'Job failed to create ticket: {job}')
 
-                    last_run_time = datetime.now()
-                    job.next_run_time = get_next_run_period(base_time=last_run_time, recur_period=job.recur_period)
-                    job.last_run_time = last_run_time
+            run_count = job.run_count + 1
+            job.next_run_time = get_next_run_period(start_time=job.start_date, run_count=run_count,
+                                                    recur_period=job.recur_period)
+            job.last_run_time = datetime.now()
+            job.run_count = run_count
 
-                    job.save()
-                else:
-                    print(f'Job failed to create ticket: {job}')
+            job.save()

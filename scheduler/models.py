@@ -87,22 +87,19 @@ class Job(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     fd_group_id = models.CharField(max_length=64)
     start_date = models.DateTimeField()
-  #  end_date = models.DateTimeField(null=True)
     recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, help_text=recur_help_text)
     enabled = models.BooleanField(default=True)
     last_run_time = models.DateTimeField(null=True)
     next_run_time = models.DateTimeField(null=True)
+    run_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        from scheduler.lib.run_jobs import get_next_run_period
         base_date = self.start_date if self.last_run_time is None else self.last_run_time
         if self.id is None:  # Then its a new instance...
             self.next_run_time = base_date
-        else:
-            self.next_run_time = get_next_run_period(base_date, self.recur_period)
 
         self.fd_company_id = Company.objects.get(name=self.company).freshdesk_id
         self.fd_group_id = Group.objects.get(name=self.group).freshdesk_id

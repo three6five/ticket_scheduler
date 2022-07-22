@@ -25,7 +25,7 @@ class TaskGroupAdmin(admin.ModelAdmin):
 
 class JobAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
-        return ['last_run_time', 'next_run_time', 'fd_group_id', 'fd_company_id']
+        return ['last_run_time', 'next_run_time', 'fd_group_id', 'fd_company_id', 'run_count']
 
 
 admin.site.register(TaskGroup, TaskGroupAdmin)

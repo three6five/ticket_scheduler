@@ -120,3 +120,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+IS_RUNNING = False
+
+
+def is_running():
+    return IS_RUNNING
