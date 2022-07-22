@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 from dateutil import relativedelta
+
+from scheduler.lib.async_scheduler import Scheduler
 from scheduler.lib.freshdesk.create_ticket import create_fd_ticket
 from scheduler.models import Job
 
@@ -21,7 +23,17 @@ def get_next_run_period(base_time, recur_period):
     return next_run_time
 
 
+def begin_job_run_checks():
+    run_job_tasks()
+
+    check_time_mins = 1
+    scheduler = Scheduler()
+    scheduler.every(check_time_mins).minutes.do(run_job_tasks)
+    scheduler.run_continuously()
+
+
 def run_job_tasks():
+    print('running job checks...')
     jobs = Job.objects.all()
 
     current_date = datetime.now()
@@ -32,11 +44,12 @@ def run_job_tasks():
         if last_run_time < current_date and next_run_time < current_date:
             for task in job.task_group.tasks:
                 full_subject = f'[{job.company}]: {task.subject}'
-
+                print(f'Creating ticket: {full_subject}')
                 if result := create_fd_ticket(subject=full_subject,
                                               company_id=job.fd_company_id,
                                               group_id=job.fd_group_id,
-                                              task_body=task.body):
+                                              task_body=task.body,
+                                              task_type=task.task_type):
 
                     last_run_time = datetime.now()
                     job.next_run_time = get_next_run_period(base_time=last_run_time, recur_period=job.recur_period)
