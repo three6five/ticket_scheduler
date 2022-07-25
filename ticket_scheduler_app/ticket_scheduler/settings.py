@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-i1v(z@%cq0=*-a7euwu_&2kkhxt9$cvig4rx=m=ypw9v$tfm7m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ticketscheduler.t6f.co.za']
+ALLOWED_HOSTS = ['ticketscheduler.three6five.co.za', 'ticketscheduler.t6f.co.za']
 
 # Application definition
 
