@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 from scheduler.lib.run_jobs import begin_job_run_checks
-from ticket_scheduler.settings import is_running
+from ticket_scheduler.settings import scheduler_running
 
 
 class SchedulerConfig(AppConfig):
@@ -10,6 +10,6 @@ class SchedulerConfig(AppConfig):
 
     def ready(self):
         import os
-        if os.environ.get('RUN_MAIN', None) != 'true' and is_running():
+        if os.environ.get('RUN_MAIN', None) != 'true' and scheduler_running():
             begin_job_run_checks()
 

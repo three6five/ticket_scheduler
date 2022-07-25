@@ -131,5 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 IS_RUNNING = False
 
 
-def is_running():
+def scheduler_running():
     return IS_RUNNING
