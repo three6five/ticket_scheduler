@@ -2,6 +2,7 @@ from scheduler.lib.data_management.sql import get_df_from_table
 from scheduler.models import Group, Company, Engineer
 
 
+# todo - refactor 3 functions below into a single one
 def update_groups():
     group_df = get_df_from_table('freshdesk_groups')
 

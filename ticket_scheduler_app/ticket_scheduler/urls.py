@@ -22,6 +22,3 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('scheduler.urls'))
 ]
-
-if is_running():
-    begin_job_run_checks()
