@@ -22,7 +22,7 @@ def main():
     if 'makemigrations' not in sys.argv and 'migrate' not in sys.argv \
             and 'seed' not in sys.argv and 'collectstatic' not in sys.argv:
         log_msg(f'sys argv = {sys.argv}')
-        settings.IS_RUNNING = True
+        settings.IS_RUNNING = False
 
     execute_from_command_line(sys.argv)
 
