@@ -17,7 +17,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    if 'makemigrations' not in sys.argv and 'migrate' not in sys.argv:
+    if 'makemigrations' not in sys.argv and 'migrate' not in sys.argv and 'seed' not in sys.argv:
         settings.IS_RUNNING = True
 
     execute_from_command_line(sys.argv)
