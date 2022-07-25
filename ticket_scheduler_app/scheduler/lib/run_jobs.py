@@ -37,7 +37,7 @@ def run_job_tasks():
 
     current_date = datetime.now()
     utc = pytz.UTC
-    current_date = utc.localize(current_date)
+    current_date = utc.localize(current_date, dt=utc)
 
     for job in jobs:
         last_run_time = job.last_run_time
