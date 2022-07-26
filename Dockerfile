@@ -83,4 +83,4 @@ USER ${APP_USER}:${APP_USER}
 
 # Start uWSGI
 #CMD ["uwsgi", "--show-config"]
-CMD ["/code/manage.py", "runserver", "0.0.0.0", "8045"]
+CMD ["manage.py", "runserver", "0.0.0.0", "8045"]
