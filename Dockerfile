@@ -61,16 +61,16 @@ ENV DJANGO_SETTINGS_MODULE=ticket_scheduler.settings
 
 
 # Tell uWSGI where to find your wsgi file (change this):
-ENV UWSGI_WSGI_FILE=ticket_scheduler/wsgi.py
+#ENV UWSGI_WSGI_FILE=ticket_scheduler/wsgi.py
 
 # Base uWSGI configuration (you shouldn't need to change these):
-ENV UWSGI_HTTP=:8045 UWSGI_MASTER=1 UWSGI_HTTP_AUTO_CHUNKED=1 UWSGI_HTTP_KEEPALIVE=1 UWSGI_LAZY_APPS=1 UWSGI_WSGI_ENV_BEHAVIOR=holy
+#ENV UWSGI_HTTP=:8045 UWSGI_MASTER=1 UWSGI_HTTP_AUTO_CHUNKED=1 UWSGI_HTTP_KEEPALIVE=1 UWSGI_LAZY_APPS=1 UWSGI_WSGI_ENV_BEHAVIOR=holy
 
 # Number of uWSGI workers and threads per worker (customize as needed):
-ENV UWSGI_WORKERS=2 UWSGI_THREADS=4
+#ENV UWSGI_WORKERS=2 UWSGI_THREADS=4
 
 # uWSGI static file serving configuration (customize or comment out if not needed):
-ENV UWSGI_STATIC_MAP="/assets/=/code/assets/" UWSGI_STATIC_EXPIRES_URI="/static/.*\.[a-f0-9]{12,}\.(css|js|png|jpg|jpeg|gif|ico|woff|ttf|otf|svg|scss|map|txt) 315360000"
+#ENV UWSGI_STATIC_MAP="/assets/=/code/assets/" UWSGI_STATIC_EXPIRES_URI="/static/.*\.[a-f0-9]{12,}\.(css|js|png|jpg|jpeg|gif|ico|woff|ttf|otf|svg|scss|map|txt) 315360000"
 
 # Deny invalid hosts before they get to Django (uncomment and change to your hostname(s)):
 # ENV UWSGI_ROUTE_HOST="^(?!localhost:8000$) break:400"
@@ -82,6 +82,6 @@ USER ${APP_USER}:${APP_USER}
 # ENTRYPOINT ["/code/docker-entrypoint.sh"]
 
 # Start uWSGI
-CMD ["python", "./manage.py", "runserver", "--settings=ticket_scheduler.settings"]
-CMD ["uwsgi", "--module", "ticket_scheduler.wsgi"]
+CMD ["python", "./manage.py", "runserver", '0.0.0.0:8045', "--settings=ticket_scheduler.settings"]
+#CMD ["uwsgi", "--module", "ticket_scheduler.wsgi"]
 
