@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
 
 def seed_time_period():
-    for period in ['Monthly', 'Weekly', 'Daily']:
+    for period in ['Yearly', 'Quarterly', 'Monthly', 'Weekly', 'Daily']:
         if TimePeriod.objects.filter(name=period):
             continue
         obj = TimePeriod(name=period)

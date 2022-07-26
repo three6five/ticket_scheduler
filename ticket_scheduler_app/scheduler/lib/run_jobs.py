@@ -10,7 +10,11 @@ sleep_time = 1800
 
 
 def get_next_run_period(start_time, run_count, recur_period):
-    if recur_period.name == 'Monthly':
+    if recur_period.name == 'Yearly':
+        next_run_time = start_time + relativedelta.relativedelta(months=run_count * 12)
+    elif recur_period.name == 'Quarterly':
+        next_run_time = start_time + relativedelta.relativedelta(months=run_count * 3)
+    elif recur_period.name == 'Monthly':
         next_run_time = start_time + relativedelta.relativedelta(months=run_count)
     elif recur_period.name == 'Weekly':
         next_run_time = start_time + relativedelta.relativedelta(weeks=run_count)
