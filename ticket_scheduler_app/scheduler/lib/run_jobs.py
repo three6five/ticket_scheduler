@@ -27,7 +27,7 @@ def get_next_run_period(start_time, run_count, recur_period):
 
 
 def begin_job_run_checks():
-    run_job_tasks()
+    print('Scheduling task checks...')
 
     check_time_mins = 1
     scheduler = Scheduler()
