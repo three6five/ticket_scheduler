@@ -59,7 +59,6 @@ EXPOSE 8045
 # Add any static environment variables needed by Django or your settings file here:
 ENV DJANGO_SETTINGS_MODULE=ticket_scheduler.settings
 
-
 # Tell uWSGI where to find your wsgi file (change this):
 ENV UWSGI_WSGI_FILE=ticket_scheduler/wsgi.py
 
@@ -73,7 +72,7 @@ ENV UWSGI_WORKERS=2 UWSGI_THREADS=4
 ENV UWSGI_STATIC_MAP="/assets/=/code/assets/" UWSGI_STATIC_EXPIRES_URI="/static/.*\.[a-f0-9]{12,}\.(css|js|png|jpg|jpeg|gif|ico|woff|ttf|otf|svg|scss|map|txt) 315360000"
 
 # Deny invalid hosts before they get to Django (uncomment and change to your hostname(s)):
-ENV UWSGI_ROUTE_HOST="^(?!localhost:8045$) break:400"
+#ENV UWSGI_ROUTE_HOST="^(?!localhost:8045$) break:400"
 
 # Change to a non-root user
 USER ${APP_USER}:${APP_USER}
@@ -82,6 +81,7 @@ USER ${APP_USER}:${APP_USER}
 # ENTRYPOINT ["/code/docker-entrypoint.sh"]
 
 # Start uWSGI
-#CMD ["python", "./manage.py", "runserver", "0.0.0.0:8045", "--settings=ticket_scheduler.settings"]
+CMD ["python", "./manage.py", "runserver", "0.0.0.0:8045", "--settings=ticket_scheduler.settings"]
+#CMD ["uwsgi", "--module", "ticket_scheduler.wsgi"]
 #CMD ["uwsgi", "--module", "ticket_scheduler.wsgi"]
 
