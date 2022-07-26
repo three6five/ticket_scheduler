@@ -7,8 +7,8 @@ class SchedulerConfig(AppConfig):
     name = 'scheduler'
 
     def ready(self):
-     #  import os
-        if scheduler_running():
+        import os
+        if os.environ.get('RUN_MAIN', None) != 'true' and scheduler_running():
             from scheduler.lib.run_jobs import begin_job_run_checks
             begin_job_run_checks()
 
