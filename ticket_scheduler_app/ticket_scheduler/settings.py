@@ -25,6 +25,7 @@ SECRET_KEY = 'django-insecure-i1v(z@%cq0=*-a7euwu_&2kkhxt9$cvig4rx=m=ypw9v$tfm7m
 DEBUG = True
 
 ALLOWED_HOSTS = ['ticketscheduler.three6five.co.za', 'ticketscheduler.t6f.co.za']
+CSRF_TRUSTED_ORIGINS = ['https://ticketscheduler.three6five.co.za', 'ticketscheduler.t6f.co.za']
 
 # Application definition
 
@@ -42,7 +43,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
