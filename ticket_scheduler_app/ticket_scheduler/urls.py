@@ -16,8 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from scheduler.lib.run_jobs import begin_job_run_checks
+from ticket_scheduler.settings import scheduler_running
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('scheduler.urls'))
 ]
+
+if scheduler_running():
+    from scheduler.lib.run_jobs import begin_job_run_checks
+    begin_job_run_checks()

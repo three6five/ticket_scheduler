@@ -36,7 +36,7 @@ def begin_job_run_checks():
 
 
 def run_job_tasks():
-    print('running job checks...')
+    log_msg('running job checks...')
     jobs = Job.objects.all()
 
     current_date = datetime.now()
@@ -53,7 +53,7 @@ def run_job_tasks():
         if any(run_conditions):
             for task in job.task_group.tasks.all():
                 full_subject = f'[{job.company}]: {task.subject}'
-                print(f'Creating ticket: {full_subject}')
+                log_msg(f'Creating ticket: {full_subject}')
                 result = create_fd_ticket(subject=full_subject,
                                           company_id=job.fd_company_id,
                                           group_id=job.fd_group_id,
