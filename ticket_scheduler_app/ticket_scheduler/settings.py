@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-i1v(z@%cq0=*-a7euwu_&2kkhxt9$cvig4rx=m=ypw9v$tfm7m
 DEBUG = True
 
 ALLOWED_HOSTS = ['ticketscheduler.three6five.co.za', 'ticketscheduler.t6f.co.za']
-#CSRF_TRUSTED_ORIGINS = ['https://*.three6five.co.za','https://ticketscheduler.three6five.co.za', 'https://ticketscheduler.t6f.co.za']
+CSRF_TRUSTED_ORIGINS = ['https://*.three6five.co.za','https://ticketscheduler.three6five.co.za', 'https://ticketscheduler.t6f.co.za']
 
 # Application definition
 
