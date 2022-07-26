@@ -82,4 +82,4 @@ USER ${APP_USER}:${APP_USER}
 # ENTRYPOINT ["/code/docker-entrypoint.sh"]
 
 # Start uWSGI
-CMD ["uwsgi", "--show-config"]
+#CMD ["uwsgi", "--show-config"]
