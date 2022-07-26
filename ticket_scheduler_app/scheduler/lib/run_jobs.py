@@ -27,12 +27,11 @@ def get_next_run_period(start_time, run_count, recur_period):
 
 
 def begin_job_run_checks():
-    log_msg('Scheduling task checks...')
-
     check_time_mins = 1
     scheduler = Scheduler()
     scheduler.every(check_time_mins).minutes.do(run_job_tasks)
     scheduler.run_continuously()
+    log_msg(f'Tasks scheduled to run every {check_time_mins} mins...')
 
 
 def run_job_tasks():
@@ -44,6 +43,7 @@ def run_job_tasks():
     current_date = utc.localize(current_date, dt=utc)
 
     for job in jobs:
+        log_msg(f'Checking job {job} for running...')
         last_run_time = job.last_run_time
         next_run_time = job.next_run_time
 
@@ -70,3 +70,5 @@ def run_job_tasks():
             job.run_count = run_count
 
             job.save()
+        else:
+            log_msg(f'No tasks to run for job {job}, continuing...')
