@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from env import DEV_MODE
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -24,7 +26,7 @@ SECRET_KEY = 'django-insecure-i1v(z@%cq0=*-a7euwu_&2kkhxt9$cvig4rx=m=ypw9v$tfm7m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ticketscheduler.three6five.co.za', 'ticketscheduler.t6f.co.za']
+ALLOWED_HOSTS = ['ticketscheduler.three6five.co.za', 'ticketscheduler.t6f.co.za', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://*.three6five.co.za','https://ticketscheduler.three6five.co.za', 'https://ticketscheduler.t6f.co.za']
 
 # Application definition
@@ -73,11 +75,13 @@ WSGI_APPLICATION = 'ticket_scheduler.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+db_file = './my_dev.cnf' if DEV_MODE else './my.cnf'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': './my.cnf',
+            'read_default_file': db_file,
             'sql_mode': 'traditional',
         },
     }

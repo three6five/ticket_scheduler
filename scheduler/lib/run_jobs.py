@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta
+
+import pandas as pd
 from dateutil import relativedelta
 import pytz
 from scheduler.lib.async_scheduler import Scheduler
 from scheduler.lib.freshdesk.create_ticket import create_fd_ticket
 from scheduler.lib.logger import log_msg
-from scheduler.models import Job
+from scheduler.models import Job, TaskRunHistory
 
 sleep_time = 1800
 
@@ -32,43 +34,57 @@ def begin_job_run_checks():
     scheduler.every(check_time_mins).minutes.do(run_job_tasks)
     scheduler.run_continuously()
     log_msg(f'Tasks scheduled to run every {check_time_mins} mins...')
+    run_job_tasks()
 
 
 def run_job_tasks():
-    log_msg('running job checks...')
-    jobs = Job.objects.all()
+    try:
+        log_msg('running job checks...')
+        jobs = Job.objects.all()
 
-    current_date = datetime.now()
-    utc = pytz.UTC
-    current_date = utc.localize(current_date, dt=utc)
+        if not any(job.enabled for job in jobs):
+            log_msg('No enabled jobs found...')
+            return
 
-    for job in jobs:
-        log_msg(f'Checking job {job} for running...')
-        last_run_time = job.last_run_time
-        next_run_time = job.next_run_time
+        current_date = datetime.now()
+        utc = pytz.UTC
+        current_date = utc.localize(current_date)
 
-        run_conditions = [last_run_time and last_run_time < current_date and next_run_time < current_date,
-                          not last_run_time and next_run_time < current_date]
+        all_run_history_df = pd.DataFrame(TaskRunHistory.objects.all().values())
 
-        if any(run_conditions):
+        for job in jobs:
+            log_msg(f'Checking job {job} for tasks to run..')
+
             for task in job.task_group.tasks.all():
-                full_subject = f'[{job.company}]: {task.subject}'
-                log_msg(f'Creating ticket: {full_subject}')
-                result = create_fd_ticket(subject=full_subject,
-                                          company_id=job.fd_company_id,
-                                          group_id=job.fd_group_id,
-                                          task_body=task.body,
-                                          task_type_name=task.task_type.name,
-                                          agent_id=int(job.engineer.freshdesk_id))
-                if not result:
-                    log_msg(f'Job failed to create ticket: {job}')
+                if len(all_run_history_df):
+                    task_run_history_df = all_run_history_df[(all_run_history_df.job_name == job.name) &
+                                                             (all_run_history_df.task_subject == task.subject)]
+                    task_run_history_df = task_run_history_df.sort_values('run_date', ascending=False)
 
-            run_count = job.run_count + 1
-            job.next_run_time = get_next_run_period(start_time=job.start_date, run_count=run_count,
-                                                    recur_period=job.recur_period)
-            job.last_run_time = datetime.now()
-            job.run_count = run_count
+                    run_count = len(task_run_history_df)
+                    last_run_time = task_run_history_df.iloc[0].run_date if run_count else None
+                else:
+                    run_count = 0
+                    last_run_time = None
 
-            job.save()
-        else:
-            log_msg(f'No tasks to run for job {job}, continuing...')
+                recur_period = task.recur_period
+
+                next_run_time = get_next_run_period(start_time=job.start_date, run_count=run_count,
+                                                      recur_period=recur_period)
+                log_msg(f'Next run time for {job} - {task} : {next_run_time}')
+                run_conditions = [last_run_time and last_run_time < current_date and next_run_time < current_date,
+                                  not last_run_time and next_run_time < current_date]
+
+                if any(run_conditions):
+                    full_subject = f'[{job.company}]: {task.subject}'
+                    log_msg(f'Creating ticket: {full_subject}')
+                    if result := create_fd_ticket(subject=full_subject, company_id=job.fd_company_id, group_id=job.fd_group_id, task_body=task.body, task_type_name=task.task_type.name, agent_id=int(job.engineer.freshdesk_id)):
+                        TaskRunHistory(job_name=job.name, task_subject=task.subject,
+                                       run_date=datetime.now()).save()
+
+                        log_msg(f'Ticket created: {task}')
+                    else:
+                        log_msg(f'Job failed to create ticket: {job} - {task}')
+
+    except Exception as e:
+        log_msg(e)

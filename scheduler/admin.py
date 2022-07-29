@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, TaskGroup, Job, SubTask
+from .models import Task, TaskGroup, Job, SubTask, TaskRunHistory
 from django.contrib.admin import AdminSite
 
 
@@ -25,9 +25,15 @@ class TaskGroupAdmin(admin.ModelAdmin):
 
 class JobAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
-        return ['last_run_time', 'next_run_time', 'fd_group_id', 'fd_company_id', 'run_count']
+        return ['fd_group_id', 'fd_company_id']
+
+
+class TaskRunHistoryAdmin(admin.ModelAdmin):
+    def get_readonly_fields(self, request, obj=None):
+        return ['job_name', 'task_subject', 'run_date']
 
 
 admin.site.register(TaskGroup, TaskGroupAdmin)
 admin.site.register(Task)
 admin.site.register(Job, JobAdmin)
+admin.site.register(TaskRunHistory, TaskRunHistoryAdmin)

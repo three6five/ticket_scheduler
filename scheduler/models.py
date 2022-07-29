@@ -55,11 +55,22 @@ class SubTask(models.Model):
         return self.task_group.name
 
 
+class TaskRunHistory(models.Model):
+    id = models.AutoField(primary_key=True)
+    job_name = models.CharField(max_length=128)
+    task_subject = models.CharField(max_length=128)
+    run_date = models.DateTimeField()
+
+
+    def __str__(self):
+        return f'{self.job_name} - {self.task_subject} - {self.run_date}'
+
+
 class Task(models.Model):
     recur_help_text = 'If monthly, task will be created on the same day (IE. 1st -> 1st), if weekly or bi-weekly it will be the same week day (IE. Monday -> Monday)'
 
     id = models.AutoField(primary_key=True)
-    subject = models.CharField(max_length=128)
+    subject = models.CharField(max_length=128, unique=True)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, help_text=recur_help_text)
     body = models.TextField(max_length=65000)
@@ -81,7 +92,7 @@ class Job(models.Model):
     optional_help_text = 'Optional'
 
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, unique=True)
     task_group = models.ForeignKey(TaskGroup, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     fd_company_id = models.CharField(max_length=64)
@@ -90,20 +101,20 @@ class Job(models.Model):
     fd_group_id = models.CharField(max_length=64)
     start_date = models.DateTimeField()
     enabled = models.BooleanField(default=True)
-    last_run_time = models.DateTimeField(null=True)
-    next_run_time = models.DateTimeField(null=True)
-    run_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        base_date = self.start_date if self.last_run_time is None else self.last_run_time
-        if self.id is None:  # Then its a new instance...
-            self.next_run_time = base_date
-
         self.fd_company_id = Company.objects.get(name=self.company).freshdesk_id
         self.fd_group_id = Group.objects.get(name=self.group).freshdesk_id
 
         super().save()
 
+
+class JobTaskRunHistory(models.Model):  # todo... how to log task run history to a model for easy view...
+    job = models.ForeignKey(Job, related_name='job_task_run_history_through', on_delete=models.CASCADE)
+    task = models.ForeignKey(Job, related_name='job_task_run_history_through', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.job} - {self.task}'

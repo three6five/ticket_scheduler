@@ -24,5 +24,5 @@ urlpatterns = [
 ]
 
 #if scheduler_running():
- #   from scheduler.lib.run_jobs import begin_job_run_checks
- #   begin_job_run_checks()
+#    from scheduler.lib.run_jobs import begin_job_run_checks
+#    begin_job_run_checks()
