@@ -29,7 +29,7 @@ def get_next_run_period(start_time, run_count, recur_period):
 
 
 def begin_job_run_checks():
-    check_time_mins = 1
+    check_time_mins = 15
     scheduler = Scheduler()
     scheduler.every(check_time_mins).minutes.do(run_job_tasks)
     scheduler.run_continuously()

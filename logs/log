@@ -316,3 +316,31 @@
 2022-07-29 16:28:37,940 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
 2022-07-29 16:28:37,942 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
 2022-07-29 16:29:20,437 INFO sys argv = ['E:\\dev_projects\\ticket_scheduler\\manage.py', 'runserver'], setting IS_RUNNING to True
+2022-07-29 16:29:38,430 INFO running job checks...
+2022-07-29 16:29:38,432 INFO Checking job new_job for tasks to run..
+2022-07-29 16:29:38,435 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
+2022-07-29 16:29:38,437 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
+2022-07-29 16:30:38,986 INFO running job checks...
+2022-07-29 16:30:38,989 INFO Checking job new_job for tasks to run..
+2022-07-29 16:30:38,994 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
+2022-07-29 16:30:38,996 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
+2022-07-29 16:31:39,560 INFO running job checks...
+2022-07-29 16:31:39,563 INFO Checking job new_job for tasks to run..
+2022-07-29 16:31:39,566 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
+2022-07-29 16:31:39,568 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
+2022-07-29 16:32:40,066 INFO running job checks...
+2022-07-29 16:32:40,067 INFO Checking job new_job for tasks to run..
+2022-07-29 16:32:40,071 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
+2022-07-29 16:32:40,072 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
+2022-07-29 16:33:40,436 INFO running job checks...
+2022-07-29 16:33:40,438 INFO Checking job new_job for tasks to run..
+2022-07-29 16:33:40,442 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
+2022-07-29 16:33:40,443 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
+2022-07-29 16:34:40,864 INFO running job checks...
+2022-07-29 16:34:40,867 INFO Checking job new_job for tasks to run..
+2022-07-29 16:34:40,871 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
+2022-07-29 16:34:40,872 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
+2022-07-29 16:35:41,375 INFO running job checks...
+2022-07-29 16:35:41,377 INFO Checking job new_job for tasks to run..
+2022-07-29 16:35:41,382 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
+2022-07-29 16:35:41,383 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
