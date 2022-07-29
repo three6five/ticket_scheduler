@@ -56,9 +56,12 @@ class SubTask(models.Model):
 
 
 class Task(models.Model):
+    recur_help_text = 'If monthly, task will be created on the same day (IE. 1st -> 1st), if weekly or bi-weekly it will be the same week day (IE. Monday -> Monday)'
+
     id = models.AutoField(primary_key=True)
     subject = models.CharField(max_length=128)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
+    recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, help_text=recur_help_text)
     body = models.TextField(max_length=65000)
 
     def __str__(self):
@@ -75,7 +78,6 @@ class TaskGroup(models.Model):
 
 
 class Job(models.Model):
-    recur_help_text = 'If monthly, task will be created on the same day (IE. 1st -> 1st), if weekly or bi-weekly it will be the same week day (IE. Monday -> Monday)'
     optional_help_text = 'Optional'
 
     id = models.AutoField(primary_key=True)
@@ -87,7 +89,6 @@ class Job(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     fd_group_id = models.CharField(max_length=64)
     start_date = models.DateTimeField()
-    recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, help_text=recur_help_text)
     enabled = models.BooleanField(default=True)
     last_run_time = models.DateTimeField(null=True)
     next_run_time = models.DateTimeField(null=True)
