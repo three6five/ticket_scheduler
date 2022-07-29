@@ -110,11 +110,3 @@ class Job(models.Model):
         self.fd_group_id = Group.objects.get(name=self.group).freshdesk_id
 
         super().save()
-
-
-class JobTaskRunHistory(models.Model):  # todo... how to log task run history to a model for easy view...
-    job = models.ForeignKey(Job, related_name='job_task_run_history_through', on_delete=models.CASCADE)
-    task = models.ForeignKey(Job, related_name='job_task_run_history_through', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.job} - {self.task}'
