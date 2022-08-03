@@ -81,7 +81,7 @@ USER ${APP_USER}:${APP_USER}
 # ENTRYPOINT ["/code/docker-entrypoint.sh"]
 
 # Start uWSGI
-CMD ["python", "./manage.py", "runserver", "0.0.0.0:8045", "--settings=ticket_scheduler.settings", '--no-reload']
+#CMD ["python", "./manage.py", "runserver", "0.0.0.0:8045", "--settings=ticket_scheduler.settings", '--no-reload']
 #CMD ["uwsgi", "--module", "ticket_scheduler.wsgi"]
 #CMD ["uwsgi", "--module", "ticket_scheduler.wsgi"]
 
