@@ -1,4 +1,4 @@
-DEV_MODE = 1
+DEV_MODE = 0
 
 re_sql_host_dev = '127.0.0.1'
 re_sql_pass_dev = 'Haskjd1jhkb2jkb123DJNwbj!'
