@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 import pandas as pd
 from dateutil import relativedelta
 import pytz
-from scheduler.lib.async_scheduler import Scheduler
 from scheduler.lib.freshdesk.create_ticket import create_fd_ticket
 from scheduler.lib.logger import log_msg
 from scheduler.models import Job, TaskRunHistory
@@ -26,15 +25,6 @@ def get_next_run_period(start_time, run_count, recur_period):
         raise ValueError(f'Unknown recur period: {recur_period}')
 
     return next_run_time
-
-
-def begin_job_run_checks():
-    check_time_mins = 15
-    scheduler = Scheduler()
-    scheduler.every(check_time_mins).minutes.do(run_job_tasks)
-    scheduler.run_continuously()
-    log_msg(f'Tasks scheduled to run every {check_time_mins} mins...')
-    run_job_tasks()
 
 
 def run_job_tasks():
