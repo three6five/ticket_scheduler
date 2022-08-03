@@ -365,3 +365,5 @@
 2022-08-03 15:24:00,061 INFO Checking job new_job for tasks to run..
 2022-08-03 15:24:00,064 INFO Next run time for new_job - tester : 2022-10-29 13:39:23+00:00
 2022-08-03 15:24:00,066 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
+2022-08-03 15:38:41,019 INFO sys argv = ['E:\\dev_projects/ticket_scheduler\\manage.py', 'runserver'], setting IS_RUNNING to True
+2022-08-03 15:38:41,767 INFO sys argv = ['E:\\dev_projects\\ticket_scheduler\\manage.py', 'runserver'], setting IS_RUNNING to True
