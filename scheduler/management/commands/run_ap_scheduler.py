@@ -13,6 +13,7 @@ from django_apscheduler import util
 from scheduler.lib.run_jobs import run_job_tasks
 
 logger = logging.getLogger(__name__)
+minutes_per_check = 5
 
 
 # The `close_old_connections` decorator ensures that database connections, that have become
@@ -40,7 +41,7 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             run_job_tasks,
-            trigger=CronTrigger(minute="*/2"),
+            trigger=CronTrigger(minute=f"*/{minutes_per_check}"),
             id="my_job",  # The `id` assigned to each job MUST be unique
             max_instances=1,
             replace_existing=True,
