@@ -68,7 +68,12 @@ def run_job_tasks():
                 if any(run_conditions):
                     full_subject = f'[{job.company}]: {task.subject}'
                     log_msg(f'Creating ticket: {full_subject}')
-                    if result := create_fd_ticket(subject=full_subject, company_id=job.fd_company_id, group_id=job.fd_group_id, task_body=task.body, task_type_name=task.task_type.name, agent_id=int(job.engineer.freshdesk_id)):
+                    if job.engineer:
+                        agent_freshdesk_id = int(job.engineer.freshdesk_id)
+                    else:
+                        agent_freshdesk_id = 0
+                    if result := create_fd_ticket(subject=full_subject, company_id=job.fd_company_id, group_id=job.fd_group_id,
+                                                  task_body=task.body, task_type_name=task.task_type.name, agent_id=agent_freshdesk_id):
                         TaskRunHistory(job_name=job.name, task_subject=task.subject,
                                        run_date=datetime.now()).save()
 
