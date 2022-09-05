@@ -96,7 +96,7 @@ class Job(models.Model):
     task_group = models.ForeignKey(TaskGroup, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     fd_company_id = models.CharField(max_length=64)
-    engineer = models.ForeignKey(Engineer, on_delete=models.CASCADE, null=True, help_text=optional_help_text)
+    engineer = models.ForeignKey(Engineer, on_delete=models.CASCADE, null=True, blank=True, help_text=optional_help_text)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     fd_group_id = models.CharField(max_length=64)
     start_date = models.DateTimeField()
