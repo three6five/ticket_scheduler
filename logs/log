@@ -367,3 +367,4 @@
 2022-08-03 15:24:00,066 INFO Next run time for new_job - tester2 : 2023-07-29 13:39:23+00:00
 2022-08-03 15:38:41,019 INFO sys argv = ['E:\\dev_projects/ticket_scheduler\\manage.py', 'runserver'], setting IS_RUNNING to True
 2022-08-03 15:38:41,767 INFO sys argv = ['E:\\dev_projects\\ticket_scheduler\\manage.py', 'runserver'], setting IS_RUNNING to True
+2022-10-06 15:23:15,976 INFO sys argv = ['E:\\dev_projects/ticket_scheduler\\manage.py', '--mode=client', '--host=127.0.0.1', '--port=19503'], setting IS_RUNNING to True

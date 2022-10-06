@@ -11,17 +11,20 @@ from scheduler.models import Job, TaskRunHistory
 sleep_time = 1800
 
 
-def get_next_run_period(start_time, run_count, recur_period):
+def get_next_run_period(last_run_time, run_count, recur_period):
+    if not last_run_time:
+        return datetime.now()
+
     if recur_period.name == 'Yearly':
-        next_run_time = start_time + relativedelta.relativedelta(months=run_count * 12)
+        next_run_time = last_run_time + relativedelta.relativedelta(months=run_count * 12)
     elif recur_period.name == 'Quarterly':
-        next_run_time = start_time + relativedelta.relativedelta(months=run_count * 3)
+        next_run_time = last_run_time + relativedelta.relativedelta(months=run_count * 3)
     elif recur_period.name == 'Monthly':
-        next_run_time = start_time + relativedelta.relativedelta(months=run_count)
+        next_run_time = last_run_time + relativedelta.relativedelta(months=run_count)
     elif recur_period.name == 'Weekly':
-        next_run_time = start_time + relativedelta.relativedelta(weeks=run_count)
+        next_run_time = last_run_time + relativedelta.relativedelta(weeks=run_count)
     elif recur_period.name == 'Daily':
-        next_run_time = start_time + relativedelta.relativedelta(days=run_count)
+        next_run_time = last_run_time + relativedelta.relativedelta(days=run_count)
     else:
         raise ValueError(f'Unknown recur period: {recur_period}')
 
@@ -60,13 +63,11 @@ def run_job_tasks():
 
                 recur_period = task.recur_period
 
-                next_run_time = get_next_run_period(start_time=job.start_date, run_count=run_count,
-                                                      recur_period=recur_period)
+                next_run_time = get_next_run_period(last_run_time=last_run_time, run_count=run_count,
+                                                    recur_period=recur_period)
                 log_msg(f'Next run time for {job} - {task} : {next_run_time}')
-                run_conditions = [last_run_time and last_run_time < current_date and next_run_time < current_date,
-                                  not last_run_time and next_run_time < current_date]
 
-                if any(run_conditions):
+                if current_date >= next_run_time:
                     full_subject = f'[{job.company}]: {task.subject}'
                     full_subject = replace_key_words(full_subject)
 
