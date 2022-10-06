@@ -4,6 +4,7 @@ import pandas as pd
 from dateutil import relativedelta
 import pytz
 from scheduler.lib.freshdesk.create_ticket import create_fd_ticket
+from scheduler.lib.helpers import replace_key_words
 from scheduler.lib.logger import log_msg
 from scheduler.models import Job, TaskRunHistory
 
@@ -67,6 +68,8 @@ def run_job_tasks():
 
                 if any(run_conditions):
                     full_subject = f'[{job.company}]: {task.subject}'
+                    full_subject = replace_key_words(full_subject)
+
                     log_msg(f'Creating ticket: {full_subject}')
                     if job.engineer:
                         agent_freshdesk_id = int(job.engineer.freshdesk_id)
