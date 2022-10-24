@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-from ticket_scheduler.settings import scheduler_running
 
 
 class SchedulerConfig(AppConfig):

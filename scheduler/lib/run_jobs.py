@@ -65,7 +65,10 @@ def run_job_tasks():
 
                 next_run_time = get_next_run_period(last_run_time=last_run_time, run_count=run_count,
                                                     recur_period=recur_period)
+                task.next_run_time = next_run_time
                 log_msg(f'Next run time for {job} - {task} : {next_run_time}')
+
+                task.save()
 
                 if current_date >= next_run_time:
                     full_subject = f'[{job.company}]: {task.subject}'

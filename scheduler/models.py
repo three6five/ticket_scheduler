@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 
@@ -74,6 +76,7 @@ class Task(models.Model):
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, help_text=recur_help_text)
     body = models.TextField(max_length=65000)
+    next_run_time = models.DateTimeField(default=datetime.datetime(year=2199, month=1, day=1))
 
     def __str__(self):
         return f'{self.subject}'
