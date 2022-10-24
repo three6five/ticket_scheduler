@@ -70,7 +70,7 @@ class TaskRunHistory(models.Model):
 class Task(models.Model):
     help_text_day = 'Asterix(*) represents all, comma seperates multiple, IE. "1,10,15" would represent the 1st, ' \
                     '10th and 15th day of the month '
-    help_text_month = 'Asterix(*) represents all, comma seperates multiple, IE. "3,6,9,12" would represent Jan, June, ' \
+    help_text_month = 'Asterix(*) represents all, comma seperates multiple, IE. "3,6,9,12" would represent March, June, ' \
                       'Sep and Dec '
     id = models.AutoField(primary_key=True)
     subject = models.CharField(max_length=128, unique=True)
