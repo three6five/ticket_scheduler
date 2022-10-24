@@ -77,7 +77,6 @@ class Task(models.Model):
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     reoccurrence_day = models.CharField(max_length=32, default='0', help_text=help_text_day)
     reoccurrence_month = models.CharField(max_length=32, default='0', help_text=help_text_month)
-    recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
     body = models.TextField(max_length=65000)
 
     def __str__(self):
