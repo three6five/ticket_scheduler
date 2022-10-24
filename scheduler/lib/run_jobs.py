@@ -62,8 +62,8 @@ def run_job_tasks():
         for job in jobs:
             log_msg(f'Checking job {job} for tasks to run..')
 
-            if datetime.now() > job.start_date.replace(tzinfo=pytz.UTC):
-                continue
+          #  if datetime.now() > job.start_date.replace(tzinfo=pytz.UTC):
+          #      continue
 
             for task in job.task_group.tasks.all():
                 if len(all_run_history_df):
