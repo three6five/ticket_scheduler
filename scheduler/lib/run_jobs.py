@@ -18,14 +18,14 @@ def should_run_now(last_run_time, reoccurrence_periods):
 
     if '*' not in reoccurrence_days:
         try:
-            reoccurrence_days = list(map(lambda x: int(x), reoccurrence_days.split(',')))
+            reoccurrence_days = list(map(lambda x: int(x), reoccurrence_days))
         except Exception as e:
             log_msg(f'Error converting days to int: {e}')
             raise ValueError(e)
 
     if '*' not in reoccurrence_months:
         try:
-            reoccurrence_months = list(map(lambda x: int(x), reoccurrence_months.split(',')))
+            reoccurrence_months = list(map(lambda x: int(x), reoccurrence_months))
         except Exception as e:
             log_msg(f'Error converting months to int: {e}')
             raise ValueError(e)
@@ -58,14 +58,12 @@ def run_job_tasks():
             log_msg('No enabled jobs found...')
             return
 
-        current_date = datetime.now()
-        utc = pytz.UTC
-        current_date = utc.localize(current_date)
-
         all_run_history_df = pd.DataFrame(TaskRunHistory.objects.all().values())
 
         for job in jobs:
             log_msg(f'Checking job {job} for tasks to run..')
+            if datetime.now() > job.start_date:
+                continue
 
             for task in job.task_group.tasks.all():
                 if len(all_run_history_df):
