@@ -18,16 +18,4 @@ class Migration(migrations.Migration):
             name='engineer',
             field=models.ForeignKey(blank=True, help_text='Optional', null=True, on_delete=django.db.models.deletion.CASCADE, to='scheduler.engineer'),
         ),
-        migrations.AddField(
-            model_name='job',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True,
-                                       default=datetime.datetime(2022, 10, 6, 13, 24, 0, 833042, tzinfo=utc)),
-            preserve_default=False,
-        ),
-        migrations.AddField(
-            model_name='job',
-            name='updated_at',
-            field=models.DateTimeField(auto_now=True),
-        ),
     ]
