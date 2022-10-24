@@ -7,8 +7,6 @@ from scheduler.lib.logger import log_msg
 from scheduler.models import Job, TaskRunHistory
 
 
-
-
 def should_run_now(last_run_time, reoccurrence_periods):
     day = reoccurrence_periods['day'].replace(' ', '')
     month = reoccurrence_periods['month'].replace(' ', '')
@@ -59,10 +57,12 @@ def run_job_tasks():
             return
 
         all_run_history_df = pd.DataFrame(TaskRunHistory.objects.all().values())
+        utc = pytz.UTC
 
         for job in jobs:
             log_msg(f'Checking job {job} for tasks to run..')
-            if datetime.now() > job.start_date:
+
+            if datetime.now() > utc.localize(job.start_date):
                 continue
 
             for task in job.task_group.tasks.all():
