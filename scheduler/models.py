@@ -68,14 +68,16 @@ class TaskRunHistory(models.Model):
 
 
 class Task(models.Model):
-    recur_help_text = 'If monthly, task will be created on the same day (IE. 1st -> 1st), if weekly or bi-weekly it will be the same week day (IE. Monday -> Monday)'
-
+    help_text_day = 'Asterix(*) represents all, comma seperates multiple, IE. "1,10,15" would represent the 1st, ' \
+                    '10th and 15th day of the month '
+    help_text_month = 'Asterix(*) represents all, comma seperates multiple, IE. "3,6,9,12" would represent Jan, June, ' \
+                      'Sep and Dec '
     id = models.AutoField(primary_key=True)
     subject = models.CharField(max_length=128, unique=True)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
-    reoccurrence_day = models.CharField(max_length=32, default='0')
-    reoccurrence_month = models.CharField(max_length=32, default='0')
-    recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, help_text=recur_help_text)
+    reoccurrence_day = models.CharField(max_length=32, default='0', help_text=help_text_day)
+    reoccurrence_month = models.CharField(max_length=32, default='0', help_text=help_text_month)
+    recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
     body = models.TextField(max_length=65000)
 
     def __str__(self):

@@ -10,19 +10,25 @@ from scheduler.models import Job, TaskRunHistory
 
 
 def should_run_now(last_run_time, reoccurrence_periods):
-    day = reoccurrence_periods['day']
-    month = reoccurrence_periods['month']
+    day = reoccurrence_periods['day'].replace(' ', '')
+    month = reoccurrence_periods['month'].replace(' ', '')
 
     reoccurrence_days = day.split(',')
     reoccurrence_months = month.split(',')
 
-    try:
-        reoccurrence_days = list(map(lambda x: int(x), reoccurrence_days.split(',')))
-        reoccurrence_months = list(map(lambda x: int(x), reoccurrence_months.split(',')))
+    if '*' not in reoccurrence_days:
+        try:
+            reoccurrence_days = list(map(lambda x: int(x), reoccurrence_days.split(',')))
+        except Exception as e:
+            log_msg(f'Error converting days to int: {e}')
+            raise ValueError(e)
 
-    except Exception as e:
-        log_msg(f'Error converting days/months to int: {e}')
-        raise ValueError(e)
+    if '*' not in reoccurrence_months:
+        try:
+            reoccurrence_months = list(map(lambda x: int(x), reoccurrence_months.split(',')))
+        except Exception as e:
+            log_msg(f'Error converting months to int: {e}')
+            raise ValueError(e)
 
     last_run_day = 0
     last_run_month = 0
@@ -35,8 +41,8 @@ def should_run_now(last_run_time, reoccurrence_periods):
     now_day = now.day
     now_month = now.month
 
-    day_passes = any(now_day == day for day in reoccurrence_days)
-    month_passes = any(now_month == month for month in reoccurrence_months)
+    day_passes = any(now_day == day or day == '*' for day in reoccurrence_days)
+    month_passes = any(now_month == month or month == '*' for month in reoccurrence_months)
 
     last_run_passes = last_run_day != now_day and last_run_month != now_month
 
