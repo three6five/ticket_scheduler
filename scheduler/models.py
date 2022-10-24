@@ -63,7 +63,6 @@ class TaskRunHistory(models.Model):
     task_subject = models.CharField(max_length=128)
     run_date = models.DateTimeField()
 
-
     def __str__(self):
         return f'{self.job_name} - {self.task_subject} - {self.run_date}'
 
@@ -74,9 +73,10 @@ class Task(models.Model):
     id = models.AutoField(primary_key=True)
     subject = models.CharField(max_length=128, unique=True)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
+    reoccurrence_day = models.CharField(max_length=32, default='1')
+    reoccurrence_month = models.CharField(max_length=32, default='1')
     recur_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, help_text=recur_help_text)
     body = models.TextField(max_length=65000)
-    next_run_time = models.DateTimeField(default=datetime.datetime(year=2199, month=1, day=1))
 
     def __str__(self):
         return f'{self.subject}'
