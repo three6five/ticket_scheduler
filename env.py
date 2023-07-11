@@ -1,4 +1,4 @@
-DEV_MODE = True
+DEV_MODE = False
 
 reporting_engine_mysql_dev = dict(
     host='127.0.0.1',
