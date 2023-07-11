@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+from env import DEV_MODE
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,7 +76,7 @@ WSGI_APPLICATION = 'ticket_scheduler.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-db_file = './my_dev.cnf' if __debug__ else './my.cnf'
+db_file = './my_dev.cnf' if DEV_MODE else './my.cnf'
 
 DATABASES = {
     'default': {
