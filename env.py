@@ -8,7 +8,7 @@ reporting_engine_mysql_dev = dict(
     db='reporting_engine')
 
 reporting_engine_mysql_prod = dict(
-    host='10.1.126.16',
+    host='172.17.0.1',
     port='3306',
     user='reporting_engine_user',
     password='AISHD89hdn12jkndansd',
