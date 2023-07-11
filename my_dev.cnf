@@ -1,6 +1,6 @@
 [client]
-  user=admin
-  password=Alcapone86!
+  user=scheduler_user
+  password=KLSAJHd98j12dn12dknmwf
   database=task_scheduler
   default-character-set=utf8
   host=127.0.0.1

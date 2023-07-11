@@ -69,14 +69,17 @@ class TaskRunHistory(models.Model):
 
 class Task(models.Model):
     help_text_day = 'Asterix(*) represents all, comma seperates multiple, IE. "1,10,15" would represent the 1st, ' \
-                    '10th and 15th day of the month '
+                    '10th and 15th day of the month'
     help_text_month = 'Asterix(*) represents all, comma seperates multiple, IE. "3,6,9,12" would represent March, June, ' \
-                      'Sep and Dec '
+                      'Sep and Dec'
+    help_text_day_of_week = 'Asterix(*) represents all, comma seperates multiple, IE. "1,3,5" would represent Monday, ' \
+                            'Wednesday and Friday.'
     id = models.AutoField(primary_key=True)
     subject = models.CharField(max_length=128, unique=True)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     reoccurrence_day = models.CharField(max_length=32, default='0', help_text=help_text_day)
     reoccurrence_month = models.CharField(max_length=32, default='0', help_text=help_text_month)
+    reoccurrence_day_of_week = models.CharField(max_length=32, default='0', help_text=help_text_day_of_week)
     body = models.TextField(max_length=65000)
 
     def __str__(self):

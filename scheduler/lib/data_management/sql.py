@@ -1,13 +1,17 @@
 import pandas as pd
 from sqlalchemy import create_engine
-from env import re_sql_user, re_sql_pass, re_sql_port, re_sql_db, re_sql_host, DEV_MODE, re_sql_host_dev, \
-    re_sql_pass_dev
+from env import reporting_engine_mysql_dev, reporting_engine_mysql_prod, DEV_MODE
 
 print(f'{DEV_MODE=}')
-host = re_sql_host_dev if DEV_MODE else re_sql_host
-password = re_sql_pass_dev if DEV_MODE else re_sql_pass
 
-engine = create_engine('mysql+pymysql://{0}:{1}@{2}:{3}/{4}'.format(re_sql_user, password, host, re_sql_port, re_sql_db))
+host_dct = reporting_engine_mysql_dev if DEV_MODE else reporting_engine_mysql_prod
+host = host_dct['host']
+port = host_dct['port']
+user = host_dct['user']
+password = host_dct['password']
+db = host_dct['db']
+
+engine = create_engine('mysql+pymysql://{0}:{1}@{2}:{3}/{4}'.format(user, password, host, port, db))
 
 
 def get_df_from_table(table):
