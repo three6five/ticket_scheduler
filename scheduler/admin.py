@@ -68,7 +68,7 @@ class TaskForm(ModelForm):
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('subject', 'day', 'month', 'day_of_week')
+    list_display = ('subject', 'day', 'month', 'day_of_week', 'task_type')
     form = TaskForm
 
 
