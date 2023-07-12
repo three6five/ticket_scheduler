@@ -87,6 +87,7 @@ def run_job_tasks():
             for task in job.task_group.tasks.all():
                 if len(all_run_history_df):
                     task_run_history_df = all_run_history_df[(all_run_history_df.job_name == job.name) &
+                                                             (all_run_history_df.company == job.company) &
                                                              (all_run_history_df.task_subject == task.subject)]
                     task_run_history_df = task_run_history_df.sort_values('run_date', ascending=False)
 
@@ -116,7 +117,8 @@ def run_job_tasks():
                                                   task_body=task.body, task_type_name=task.task_type.name,
                                                   agent_id=agent_freshdesk_id):
 
-                        TaskRunHistory(job_name=job.name, task_subject=task.subject,
+                        TaskRunHistory(job_name=job.name, company=job.company,
+                                       task_subject=task.subject,
                                        run_date=datetime.now()).save()
 
                         log_msg(f'Ticket created: {task}')

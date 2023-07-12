@@ -89,6 +89,7 @@ class JobAdmin(admin.ModelAdmin):
 
 
 class TaskRunHistoryAdmin(admin.ModelAdmin):
+    list_display = ('job_name', 'company', 'task_subject', 'run_date')
     def get_readonly_fields(self, request, obj=None):
         return ['job_name', 'task_subject', 'run_date']
 

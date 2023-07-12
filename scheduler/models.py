@@ -61,11 +61,12 @@ class SubTask(models.Model):
 class TaskRunHistory(models.Model):
     id = models.AutoField(primary_key=True)
     job_name = models.CharField(max_length=128)
+    company = models.CharField(max_length=128)
     task_subject = models.CharField(max_length=128)
     run_date = models.DateTimeField()
 
     def __str__(self):
-        return f'{self.job_name} - {self.task_subject} - {self.run_date}'
+        return f'{self.job_name} {self.company} - {self.task_subject} - {self.run_date}'
 
 
 def task_validator(value: str):
