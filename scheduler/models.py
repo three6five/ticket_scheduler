@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -67,19 +68,74 @@ class TaskRunHistory(models.Model):
         return f'{self.job_name} - {self.task_subject} - {self.run_date}'
 
 
+def task_validator(value: str):
+    if value != '*':
+        if ',' in value:
+            for val in value.split(','):
+                if not val.isnumeric() or val == 0:
+                    raise ValueError(f'{val} is not a valid value, must be numeric above 0')
+        else:
+            if not value.isnumeric():
+                raise ValueError(f'{value} is not a valid value, must be numeric above 0')
+
+
+def day_validator(value: str):
+    if value != '*':
+        if ',' in value:
+            for val in value.split(','):
+                if not val.isnumeric():
+                    raise ValidationError(f'{val} is not a valid value, must be numeric')
+                if 0 >= int(val) > 31:
+                    raise ValidationError(f'{val} is not a valid value, must be below 1-31')
+        else:
+            if 0 >= int(value) > 31:
+                raise ValidationError(f'{value} is not a valid value, must be below 1-31')
+
+    return value
+
+
+def month_validator(value: str):
+    if value != '*':
+        if ',' in value:
+            for val in value.split(','):
+                if 0 >= int(val) > 12:
+                    raise ValidationError(f'{val} is not a valid value, must be 1-12')
+        else:
+            if 0 >= int(value) > 12:
+                raise ValidationError(f'{value} is not a valid value, must be 1-12')
+
+    return value
+
+
+def day_of_week_validator(value: str):
+    if value != '*':
+        if ',' in value:
+            for val in value.split(','):
+                if int(val) > 7:
+                    raise ValueError(f'{val} is not a valid value, must be 1-7')
+        else:
+            if int(value) > 7:
+                raise ValueError(f'{value} is not a valid value, must be 1-7')
+
+    return value
+
+
 class Task(models.Model):
     help_text_day = 'Asterix(*) represents all, comma seperates multiple, IE. "1,10,15" would represent the 1st, ' \
                     '10th and 15th day of the month'
-    help_text_month = 'Asterix(*) represents all, comma seperates multiple, IE. "3,6,9,12" would represent March, June, ' \
-                      'Sep and Dec'
+    help_text_month = 'Asterix(*) represents all, comma seperates multiple, IE. "1,6,12" would represent January, June ' \
+                      'and December'
     help_text_day_of_week = 'Asterix(*) represents all, comma seperates multiple, IE. "1,3,5" would represent Monday, ' \
                             'Wednesday and Friday.'
     id = models.AutoField(primary_key=True)
     subject = models.CharField(max_length=128, unique=True)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
-    reoccurrence_day = models.CharField(max_length=32, default='0', help_text=help_text_day)
-    reoccurrence_month = models.CharField(max_length=32, default='0', help_text=help_text_month)
-    reoccurrence_day_of_week = models.CharField(max_length=32, default='0', help_text=help_text_day_of_week)
+    reoccurrence_day = models.CharField(max_length=32, default='*', help_text=help_text_day,
+                                        validators=[day_validator])
+    reoccurrence_month = models.CharField(max_length=32, default='*', help_text=help_text_month,
+                                          validators=[month_validator])
+    reoccurrence_day_of_week = models.CharField(max_length=32, default='*', help_text=help_text_day_of_week,
+                                                validators=[day_of_week_validator])
     body = models.TextField(max_length=65000)
 
     def __str__(self):

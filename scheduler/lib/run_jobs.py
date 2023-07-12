@@ -53,23 +53,15 @@ def should_run_now(last_run_time, reoccurrence_periods):
     now_day_of_week = now.weekday() + 1  # Monday is 1, Sunday is 7
 
     day_passes = any(now_day == day or day == '*'
-                     for day in reoccurrence_days) or (len(reoccurrence_days) == 1
-                                                       and reoccurrence_days[0] == 0)
+                     for day in reoccurrence_days)
     month_passes = any(now_month == month or month == '*'
-                       for month in reoccurrence_months) or (len(reoccurrence_months) == 1
-                                                             and reoccurrence_months[0] == 0)
+                       for month in reoccurrence_months)
     day_of_week_passes = any(now_day_of_week == day_of_week or day_of_week == '*'
-                             for day_of_week in reoccurrence_days_of_week) or (len(reoccurrence_days_of_week) == 1
-                                                                               and reoccurrence_days_of_week[0] == 0)
+                             for day_of_week in reoccurrence_days_of_week)
 
     last_run_passes = all([last_run_day != now_day,
                            last_run_month != now_month,
                            last_run_day_of_week != now_day_of_week])
-
-    print(f'{day_passes=}')
-    print(f'{month_passes=}')
-    print(f'{day_of_week_passes=}')
-    print(f'{last_run_passes=}')
 
     return all((day_passes, month_passes, day_of_week_passes, last_run_passes))
 
