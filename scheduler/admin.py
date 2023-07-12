@@ -83,7 +83,7 @@ class TaskGroupAdmin(admin.ModelAdmin):
 
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('name', 'enabled', 'task_group', 'engineer')
+    list_display = ('name', 'company', 'task_group', 'engineer', 'enabled')
     def get_readonly_fields(self, request, obj=None):
         return ['fd_group_id', 'fd_company_id']
 
