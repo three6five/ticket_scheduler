@@ -130,12 +130,12 @@ class Task(models.Model):
     id = models.AutoField(primary_key=True)
     subject = models.CharField(max_length=128, unique=True)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
-    reoccurrence_day = models.CharField(max_length=32, default='*', help_text=help_text_day,
-                                        validators=[day_validator])
-    reoccurrence_month = models.CharField(max_length=32, default='*', help_text=help_text_month,
-                                          validators=[month_validator])
-    reoccurrence_day_of_week = models.CharField(max_length=32, default='*', help_text=help_text_day_of_week,
-                                                validators=[day_of_week_validator])
+    day = models.CharField(max_length=32, default='*', help_text=help_text_day,
+                           validators=[day_validator])
+    month = models.CharField(max_length=32, default='*', help_text=help_text_month,
+                             validators=[month_validator])
+    day_of_week = models.CharField(max_length=32, default='*', help_text=help_text_day_of_week,
+                                   validators=[day_of_week_validator])
     body = models.TextField(max_length=65000)
 
     def __str__(self):

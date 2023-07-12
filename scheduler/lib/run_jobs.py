@@ -8,32 +8,32 @@ from scheduler.models import Job, TaskRunHistory
 
 
 def should_run_now(last_run_time, reoccurrence_periods):
-    reoccurrence_days = reoccurrence_periods['day'].replace(' ', '')
-    reoccurrence_months = reoccurrence_periods['month'].replace(' ', '')
-    reoccurrence_days_of_week = reoccurrence_periods['day_of_week'].replace(' ', '')
-    print(f'{reoccurrence_days}, {reoccurrence_months}, {reoccurrence_days_of_week}')
+    days = reoccurrence_periods['day'].replace(' ', '')
+    months = reoccurrence_periods['month'].replace(' ', '')
+    days_of_week = reoccurrence_periods['day_of_week'].replace(' ', '')
+    print(f'{days}, {months}, {days_of_week}')
 
-    reoccurrence_days = reoccurrence_days.split(',')
-    reoccurrence_months = reoccurrence_months.split(',')
-    reoccurrence_days_of_week = reoccurrence_days_of_week.split(',')
+    days = days.split(',')
+    months = months.split(',')
+    days_of_week = days_of_week.split(',')
 
-    if reoccurrence_days and '*' not in reoccurrence_days:
+    if days and '*' not in days:
         try:
-            reoccurrence_days = list(map(lambda x: int(x), reoccurrence_days))
+            days = list(map(lambda x: int(x), days))
         except Exception as e:
             log_msg(f'Error converting days to int: {e}')
             raise ValueError(e)
 
-    if reoccurrence_months and '*' not in reoccurrence_months:
+    if months and '*' not in months:
         try:
-            reoccurrence_months = list(map(lambda x: int(x), reoccurrence_months))
+            months = list(map(lambda x: int(x), months))
         except Exception as e:
             log_msg(f'Error converting months to int: {e}')
             raise ValueError(e)
 
-    if reoccurrence_days_of_week and '*' not in reoccurrence_days_of_week:
+    if days_of_week and '*' not in days_of_week:
         try:
-            reoccurrence_days_of_week = list(map(lambda x: int(x), reoccurrence_days_of_week))
+            days_of_week = list(map(lambda x: int(x), days_of_week))
         except Exception as e:
             log_msg(f'Error converting day of week to int: {e}')
             raise ValueError(e)
@@ -53,11 +53,11 @@ def should_run_now(last_run_time, reoccurrence_periods):
     now_day_of_week = now.weekday() + 1  # Monday is 1, Sunday is 7
 
     day_passes = any(now_day == day or day == '*'
-                     for day in reoccurrence_days)
+                     for day in days)
     month_passes = any(now_month == month or month == '*'
-                       for month in reoccurrence_months)
+                       for month in months)
     day_of_week_passes = any(now_day_of_week == day_of_week or day_of_week == '*'
-                             for day_of_week in reoccurrence_days_of_week)
+                             for day_of_week in days_of_week)
 
     last_run_passes = all([last_run_day != now_day,
                            last_run_month != now_month,
@@ -98,9 +98,9 @@ def run_job_tasks():
                     last_run_time = None
 
                 reoccurrence_periods = {
-                    'day': task.reoccurrence_day,
-                    'month': task.reoccurrence_month,
-                    'day_of_week': task.reoccurrence_day_of_week
+                    'day': task.day,
+                    'month': task.month,
+                    'day_of_week': task.day_of_week
                 }
 
                 run_now = should_run_now(last_run_time=last_run_time, reoccurrence_periods=reoccurrence_periods)
